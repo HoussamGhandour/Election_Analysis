@@ -41,15 +41,26 @@ with open(file_to_load) as election_data:
     for candidate_name in candidate_votes:
         votes = candidate_votes[candidate_name]
         vote_Percentage = float(votes)/float(Total_Votes)*100
-        print(f"{candidate_name}: {vote_Percentage:.1f}% of the Vote ({votes:,})\n")
+        candidate_summary = (f"{candidate_name}: {vote_Percentage:.1f}% of the Vote ({votes:,})\n")
         if(votes>winning_count) and (vote_Percentage>winning_percentage):
             winning_count = votes
             winning_percentage = vote_Percentage
             winning_candidate = candidate_name
 
-    winner_candidate_summary = (f"-----------------\nWinner: {winning_candidate}\nWinning Vote Count: {winning_count:,}\nWinning Percentage: {winning_percentage:.1f}\n-----------------")
+    winner_candidate_summary = (f"-------------------------\nWinner: {winning_candidate}\nWinning Vote Count: {winning_count:,}\nWinning Percentage: {winning_percentage:.1f}\n-------------------------")
     print(winner_candidate_summary)
 ##create and save new output file
 file_to_save= os.path.join("Analysis","election_analysis.txt")
 with open (file_to_save,"w") as txt_file:
-    txt_file.write("Counties in the Election\n-------------------------\nArapahow\nDenver\nJefferson")
+    txt_file.write(f"Election Results\n-------------------------\nTotal Votes: {Total_Votes:,}\n-------------------------\n")
+    for candidate_name in candidate_votes:
+        votes = candidate_votes[candidate_name]
+        vote_Percentage = float(votes)/float(Total_Votes)*100
+        candidate_summary = (f"{candidate_name}: {vote_Percentage:.1f}% of the Vote ({votes:,})\n")
+        txt_file.write(f"{candidate_summary}")
+        if(votes>winning_count) and (vote_Percentage>winning_percentage):
+            winning_count = votes
+            winning_percentage = vote_Percentage
+            winning_candidate = candidate_name
+    
+    txt_file.write(f"{winner_candidate_summary}")
